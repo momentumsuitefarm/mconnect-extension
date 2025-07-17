@@ -21,3 +21,39 @@ MConnect, HTML sayfalarında bulunan yayın yapan `video`, `canvas` veya `div` e
 ```bash
 git clone https://github.com/kullaniciadi/mconnect-extension.git
 cd mconnect-extension
+
+2. Chrome'a yükle:
+Chrome'da chrome://extensions/ sayfasına git
+
+Sağ üstten Geliştirici modunu aç
+
+Paketlenmemiş uzantı yükle'ye tıkla
+
+Bu klasörü (mconnect-extension) seç
+
+mconnect-extension/
+│
+├── manifest.json         # Uzantının yapılandırma dosyası
+├── popup.html            # Kullanıcı arayüzü
+├── popup.js              # Popup arayüzünün JS işlevleri
+├── background.js         # Arka plan işlemleri (başlat/durdur)
+├── content.js            # Sayfa üzerindeki medya öğelerini tarayan içerik betiği
+├── recorder.js           # Kayıt işlemlerini yöneten modül
+└── icon.png              # Uzantı simgesi
+⚠️ Bilinen Kısıtlamalar
+chrome:// sayfalarında çalışmaz (Chrome güvenlik kısıtlaması).
+
+Kayıt sadece video, canvas veya div gibi görsel öğeler üzerinden yapılır.
+
+📦 Geliştirici Notları
+Kod Content Security Policy uyumluluğu için inline script içermez.
+
+MediaRecorder API, tarayıcı desteğine göre farklılık gösterebilir.
+
+Video .webm olarak kaydedilir. Dilersen .mp4'e dönüştürmek için ffmpeg vb. araçlar kullanılabilir.
+
+📝 Lisans
+MIT License © [@hakantektas]
+
+🙌 Katkıda Bulun
+Pull request ve issue'lara her zaman açığız. Projeyi geliştirmek için katkılarınızı bekliyoruz!
