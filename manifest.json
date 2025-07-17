@@ -1,27 +1,35 @@
-// === manifest.json ===
 {
   "manifest_version": 3,
   "name": "Mconnect Stream Recorder",
   "version": "1.0",
-  "description": "Detects and records streaming elements (video, canvas, div) on Mconnect.",
+  "description": "Detects and records streaming elements on Mconnect.",
   "permissions": [
     "tabs",
     "scripting",
     "activeTab"
   ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
-    "service_worker": "background.js"
-  },
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icon.png"
-    }
+    "service_worker": "src/background.js"
   },
   "content_scripts": [
     {
-      "matches": ["https://console.momentumsuite.com/mlive"], //167.71.76.129:443
-      "js": ["content.js"]
+      "matches": ["<all_urls>"],
+      "js": ["src/recorder.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "assets/icon.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*.png"],
+      "matches": ["<all_urls>"]
     }
   ]
 }

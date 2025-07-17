@@ -13,14 +13,30 @@
       width: 100%;
       padding: 10px;
       margin: 5px 0;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <button id="startAudio">🎙️ Sesli Kaydet</button>
-  <button id="startSilent">🔇 Sessiz Kaydet</button>
-  <button id="stopBtn">⏹️ Kaydı Durdur</button>
-  <button id="cancelBtn">❌ Kaydı Bitir (İptal)</button>
+  <div id="recordBtn">
+    <button>🎥 Kaydet</button>
+  </div>
+
+  <div id="modeButtons" class="hidden">
+    <button id="startAudio">🎙️ Sesli Kaydet</button>
+    <button id="startSilent">🔇 Sessiz Kaydet</button>
+  </div>
+
+  <div id="controlButtons" class="hidden">
+    <button id="pauseBtn">⏸️ Durdur (Pause)</button>
+    <button id="resumeBtn" class="hidden">▶️ Devam Et</button>
+    <button id="finishBtn">✅ Kaydı Bitir</button>
+    <button id="cancelBtn">❌ Kaydı İptal Et</button>
+  </div>
 
   <script src="popup.js"></script>
 </body>

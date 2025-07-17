@@ -1,55 +1,80 @@
-let mediaRecorder;
-let recordedChunks = [];
-let stream;
+(() => {
+  if (window.recorderInjected) return;
+  window.recorderInjected = true;
 
-async function startRecording(audio = false) {
-  try {
-    stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: audio });
-    mediaRecorder = new MediaRecorder(stream);
+  let mediaRecorder = null;
+  let recordedChunks = [];
+  let stream = null;
 
-    mediaRecorder.ondataavailable = (e) => {
-      if (e.data.size > 0) recordedChunks.push(e.data);
-    };
+  async function startRecording(audio = false) {
+    try {
+      const displayStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+      let finalStream = displayStream;
 
-    mediaRecorder.onstop = () => {
-      if (recordedChunks.length === 0) return;
+      if (audio) {
+        try {
+          const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          finalStream = new MediaStream([...displayStream.getTracks(), ...micStream.getAudioTracks()]);
+        } catch {
+          alert("🔇 Mikrofon erişimi reddedildi. Ses kaydı olmadan devam ediliyor.");
+        }
+      }
 
-      const blob = new Blob(recordedChunks, { type: "video/webm" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "mconnect_recording.webm";
-      a.click();
-      URL.revokeObjectURL(url);
-      recordedChunks = [];
-    };
+      mediaRecorder = new MediaRecorder(finalStream);
+      stream = finalStream;
 
-    mediaRecorder.start();
-    console.log("🎬 Kayıt başladı (audio: " + audio + ")");
-  } catch (err) {
-    console.error("❌ Kayıt başlatılamadı:", err);
-  }
-}
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.type === "CONFIGURE_RECORDING") {
-    startRecording(msg.audio);
-  }
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: "video/webm" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "mconnect_recording.webm";
+        a.click();
+        URL.revokeObjectURL(url);
+        recordedChunks = [];
+      };
 
-  if (msg.type === "STOP_RECORDING" && mediaRecorder && mediaRecorder.state !== "inactive") {
-    mediaRecorder.stop();
-    stream.getTracks().forEach(track => track.stop());
-    console.log("⏹️ Kayıt durduruldu");
-  }
-
-  if (msg.type === "CANCEL_RECORDING") {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") {
-      mediaRecorder.stop();
+      mediaRecorder.start();
+    } catch (err) {
+      alert("Kayıt başlatılamadı: " + err.message);
     }
+  }
+
+  function stopTracks() {
     if (stream) {
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach((t) => t.stop());
+      stream = null;
     }
-    recordedChunks = []; // Kayıtları sil
-    console.log("❌ Kayıt iptal edildi");
   }
-});
+
+  chrome.runtime.onMessage.addListener((msg) => {
+    switch (msg.type) {
+      case "CONFIGURE_RECORDING":
+        startRecording(msg.audio);
+        break;
+
+      case "STOP_RECORDING":
+        if (mediaRecorder?.state === "recording") mediaRecorder.pause();
+        break;
+
+      case "RESUME_RECORDING":
+        if (mediaRecorder?.state === "paused") mediaRecorder.resume();
+        break;
+
+      case "FINISH_RECORDING":
+        if (mediaRecorder) mediaRecorder.stop();
+        stopTracks();
+        break;
+
+      case "CANCEL_RECORDING":
+        if (mediaRecorder) mediaRecorder.stop();
+        stopTracks();
+        recordedChunks = [];
+        break;
+    }
+  });
+})();
