@@ -65,7 +65,7 @@ mconnect-extension/
 
 ## 📝 Lisans
 
-MIT License © [@kullaniciadiniz](https://github.com/kullaniciadiniz)
+MIT License © [@tektashakan](https://github.com/tektashakan)
 
 
 ---
