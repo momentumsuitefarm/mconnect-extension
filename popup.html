@@ -4,15 +4,24 @@
   <meta charset="UTF-8" />
   <title>Stream Recorder</title>
   <style>
-    body { font-family: sans-serif; width: 200px; padding: 10px; }
-    button { width: 100%; padding: 10px; margin: 5px 0; }
+    body {
+      font-family: sans-serif;
+      width: 220px;
+      padding: 10px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+    }
   </style>
 </head>
 <body>
-  <button id="startBtn">🎥 Kaydı Başlat</button>
+  <button id="startAudio">🎙️ Sesli Kaydet</button>
+  <button id="startSilent">🔇 Sessiz Kaydet</button>
   <button id="stopBtn">⏹️ Kaydı Durdur</button>
+  <button id="cancelBtn">❌ Kaydı Bitir (İptal)</button>
 
-  <!-- Satır içi değil, harici dosyayı bağla -->
   <script src="popup.js"></script>
 </body>
 </html>
