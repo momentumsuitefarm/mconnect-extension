@@ -21,16 +21,20 @@ MConnect, HTML sayfalarında bulunan yayın yapan `video`, `canvas` veya `div` e
 ```bash
 git clone https://github.com/kullaniciadi/mconnect-extension.git
 cd mconnect-extension
+```
 
-2. Chrome'a yükle:
-Chrome'da chrome://extensions/ sayfasına git
+### 2. Chrome'a yükle:
 
-Sağ üstten Geliştirici modunu aç
+1. Chrome'da `chrome://extensions/` sayfasına git  
+2. Sağ üstten **Geliştirici modunu** aç  
+3. **Paketlenmemiş uzantı yükle**'ye tıkla  
+4. Bu klasörü (`mconnect-extension`) seç
 
-Paketlenmemiş uzantı yükle'ye tıkla
+---
 
-Bu klasörü (mconnect-extension) seç
+## 📁 Dosya Yapısı
 
+```text
 mconnect-extension/
 │
 ├── manifest.json         # Uzantının yapılandırma dosyası
@@ -40,20 +44,31 @@ mconnect-extension/
 ├── content.js            # Sayfa üzerindeki medya öğelerini tarayan içerik betiği
 ├── recorder.js           # Kayıt işlemlerini yöneten modül
 └── icon.png              # Uzantı simgesi
-⚠️ Bilinen Kısıtlamalar
-chrome:// sayfalarında çalışmaz (Chrome güvenlik kısıtlaması).
+```
 
-Kayıt sadece video, canvas veya div gibi görsel öğeler üzerinden yapılır.
+---
 
-📦 Geliştirici Notları
-Kod Content Security Policy uyumluluğu için inline script içermez.
+## ⚠️ Bilinen Kısıtlamalar
 
-MediaRecorder API, tarayıcı desteğine göre farklılık gösterebilir.
+- `chrome://` sayfalarında çalışmaz (Chrome güvenlik kısıtlaması).
+- Kayıt sadece `video`, `canvas` veya `div` gibi görsel öğeler üzerinden yapılır.
 
-Video .webm olarak kaydedilir. Dilersen .mp4'e dönüştürmek için ffmpeg vb. araçlar kullanılabilir.
+---
 
-📝 Lisans
-MIT License © [@hakantektas]
+## 📦 Geliştirici Notları
 
-🙌 Katkıda Bulun
+- Kod `Content Security Policy` uyumluluğu için inline script içermez.
+- `MediaRecorder` API, tarayıcı desteğine göre farklılık gösterebilir.
+- Video `.webm` olarak kaydedilir. Dilersen `.mp4`'e dönüştürmek için ffmpeg vb. araçlar kullanılabilir.
+
+---
+
+## 📝 Lisans
+
+MIT License © [@tektashakan]
+
+---
+
+## 🙌 Katkıda Bulun
+
 Pull request ve issue'lara her zaman açığız. Projeyi geliştirmek için katkılarınızı bekliyoruz!
